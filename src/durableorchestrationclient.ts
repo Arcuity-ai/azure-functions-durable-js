@@ -19,13 +19,12 @@ import {
     HttpManagementPayload,
     IHttpRequest,
     IHttpResponse,
-    IOrchestrationFunctionContext,
     OrchestrationClientInputData,
     OrchestrationRuntimeStatus,
     PurgeHistoryResult,
     Utils,
 } from "./classes";
-import { OrchestrationClientInput } from "../types";
+import { OrchestrationClientInput } from "./types";
 import { WebhookUtils } from "./webhookutils";
 
 /** @hidden */
@@ -48,13 +47,10 @@ const URL = url.URL;
  * ```
  */
 export function getClient(
-    context: IOrchestrationFunctionContext,
+    context: InvocationContext,
     clientInputOptions: OrchestrationClientInput
 ): DurableOrchestrationClient {
-    if (!(context instanceof InvocationContext)) {
-        throw new Error("The first argument to getClient must be the function invocation context");
-    }
-    let clientData = getClientData(context as InvocationContext, clientInputOptions);
+    let clientData = getClientData(context, clientInputOptions);
 
     if (!process.env.WEBSITE_HOSTNAME || process.env.WEBSITE_HOSTNAME.includes("0.0.0.0")) {
         clientData = correctClientData(clientData);
@@ -66,14 +62,14 @@ export function getClient(
 /** @hidden */
 function getClientData(
     context: InvocationContext,
-    OrchestrationClientInput: OrchestrationClientInput
+    clientInput: OrchestrationClientInput
 ): OrchestrationClientInputData {
-    if (!isClientInput(OrchestrationClientInput)) {
+    if (!isClientInput(clientInput)) {
         throw new Error(
             "The second argument to getClientData must be the function input for a durable client"
         );
     }
-    const clientData: unknown = context.extraInputs.get(OrchestrationClientInput);
+    const clientData: unknown = context.extraInputs.get(clientInput);
     if (clientData && OrchestrationClientInputData.isOrchestrationClientInputData(clientData)) {
         return clientData as OrchestrationClientInputData;
     }
