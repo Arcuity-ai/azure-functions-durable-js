@@ -41,7 +41,7 @@
     "dependencies": {
         "@azure/functions": "^1.2.3",
         "axios": "^0.21.1",
-        "debug": "~2.6.9",
+        "debug": "~4.3.4",
         "lodash": "^4.17.15",
         "uuid": "~3.3.2",
         "validator": "~13.7.0",
