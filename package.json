@@ -44,7 +44,7 @@
         "debug": "~2.6.9",
         "lodash": "^4.17.15",
         "uuid": "~3.3.2",
-        "validator": "~13.7.0",
+        "validator": "~13.11.0",
         "moment": "^2.29.2"
     },
     "devDependencies": {
